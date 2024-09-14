@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca0ge5iie1ix"]
+
+[ext_resource type="Script" path="res://scripts/pawn.gd" id="1_ilikc"]
+[ext_resource type="Texture2D" uid="uid://ch3curvdvrp2k" path="res://assets/tiles/small-cube.png" id="2_ckicu"]
+
+[node name="Pawn" type="Node2D"]
+y_sort_enabled = true
+position = Vector2(16, 120)
+script = ExtResource("1_ilikc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -4)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_ckicu")
+region_rect = Rect2(0, 0, 32, 32)
