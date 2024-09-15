@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://txyo4lhfafvr"]
+
+[ext_resource type="PackedScene" uid="uid://ca0ge5iie1ix" path="res://scenes/pawn.tscn" id="1_q4f4s"]
+[ext_resource type="Texture2D" uid="uid://b8atfplikj22" path="res://assets/tiles/small-cube-white.png" id="2_3dg5x"]
+
+[node name="WhitePawn" instance=ExtResource("1_q4f4s")]
+type = "white"
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_3dg5x")

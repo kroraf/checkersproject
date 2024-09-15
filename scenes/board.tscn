@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=4 uid="uid://d1n0mm03nlufb"]
 
-[ext_resource type="Texture2D" uid="uid://caghs7vd25lkm" path="res://assets/tiles/isometric-sandbox-sheet.png" id="1_hy01s"]
+[ext_resource type="Texture2D" uid="uid://c4jyklj4a15kv" path="res://assets/tiles/isometric-sandbox-sheet.png" id="1_hy01s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7648m"]
 texture = ExtResource("1_hy01s")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://codbcni3tm0ut"]
+
+[ext_resource type="PackedScene" uid="uid://ca0ge5iie1ix" path="res://scenes/pawn.tscn" id="1_caks1"]
+[ext_resource type="Texture2D" uid="uid://ca7ajc5fji80f" path="res://assets/tiles/small-cube-black.png" id="2_p4bpo"]
+
+[node name="BlackPawn" instance=ExtResource("1_caks1")]
+type = "black"
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_p4bpo")
