@@ -7,6 +7,8 @@
 [node name="Game" type="Node2D"]
 script = ExtResource("1_suuek")
 
+[node name="Parallax2D" type="Parallax2D" parent="."]
+
 [node name="Board" parent="." instance=ExtResource("1_jpbck")]
 
 [node name="Highlighter" type="Node2D" parent="Board"]
@@ -18,3 +20,7 @@ region_rect = Rect2(32.758, 72.1709, 30.8228, 24.0361)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(13, 69)
+
+[node name="WhitePawnContainer" type="Node" parent="."]
+
+[node name="BlackPawnContainer" type="Node" parent="."]

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ca7ajc5fji80f" path="res://assets/tiles/small-cube-black.png" id="2_p4bpo"]
 
 [node name="BlackPawn" instance=ExtResource("1_caks1")]
-type = "black"
+is_type_black = true
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_p4bpo")

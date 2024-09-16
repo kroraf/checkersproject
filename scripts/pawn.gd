@@ -2,8 +2,7 @@ extends Node2D
 class_name Pawn
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
-
-@export_enum("black", "white") var type: String
+@export var is_type_black: bool
 
 func _ready() -> void:
 	pass # Replace with function body.

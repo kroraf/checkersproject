@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://b8atfplikj22" path="res://assets/tiles/small-cube-white.png" id="2_3dg5x"]
 
 [node name="WhitePawn" instance=ExtResource("1_q4f4s")]
-type = "white"
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_3dg5x")
