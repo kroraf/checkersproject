@@ -24,3 +24,36 @@ position = Vector2(13, 69)
 [node name="WhitePawnContainer" type="Node" parent="."]
 
 [node name="BlackPawnContainer" type="Node" parent="."]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+offset_left = -104.0
+offset_top = -5.0
+offset_right = -64.0
+offset_bottom = 35.0
+
+[node name="BlackScoreLabel" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 79.0
+offset_top = -5.0
+offset_right = 119.0
+offset_bottom = 35.0
+grow_horizontal = 0
+
+[node name="WhiteScoreLabel" type="Label" parent="UI/VBoxContainer2"]
+layout_mode = 2
+text = "0"

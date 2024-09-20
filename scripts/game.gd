@@ -4,6 +4,8 @@ extends Node2D
 @onready var camera_2d = $Camera2D
 @onready var white_pawn_container = $WhitePawnContainer
 @onready var black_pawn_container = $BlackPawnContainer
+@onready var black_score_label = $UI/VBoxContainer/BlackScoreLabel
+@onready var white_score_label = $UI/VBoxContainer2/WhiteScoreLabel
 
 var base_pawn = preload("res://scenes/pawn.tscn")
 var black_pawn = preload("res://scenes/black_pawn.tscn")
@@ -25,6 +27,9 @@ var WHITE_PAWN_START_COORDINATES = [Vector2i(6, 6), Vector2i(6, 4), Vector2i(6, 
 
 signal jumped_over(coordinates)
 
+var black_points: int = 0
+var white_points: int = 0
+
 var selected_pawn: Pawn = null
 var destination_tiles: Array[Vector2i] = []
 var outline = ShaderMaterial.new()
@@ -33,6 +38,7 @@ var outline = ShaderMaterial.new()
 func _ready() -> void:
 	create_pawns()
 	Events.pawn_clicked.connect(_on_pawn_clicked)
+	Events.pawn_killed.connect(_on_pawn_killed)
 	_setup_outline_shader()
 	jumped_over.connect(_on_jumped_over)
 	
@@ -46,8 +52,9 @@ func _input(event: InputEvent) -> void:
 				var selected_pawn_star_coordinates = board.local_to_map(selected_pawn.position)
 				clear_destination_tiles()
 				await selected_pawn.move(clicked_cell_position).finished
-				if is_jump(selected_pawn_star_coordinates, clicked_cell_coordinates):
-					jumped_over.emit(clicked_cell_coordinates)
+				var jump = jumped_over_tile(selected_pawn_star_coordinates, clicked_cell_coordinates)
+				if jump:
+					jumped_over.emit(jump)
 				piece_move_finished()
 	if Input.is_action_just_pressed("rmb_click"):
 		deselect_pawn()
@@ -142,10 +149,35 @@ func is_opponent_pawn_on_coordinates(coordinates):
 		if board.local_to_map(p.position) == coordinates:
 			if p.is_type_black != selected_pawn.is_type_black:
 				return true
+				
+func get_pawn_on_coordinates(coordinates: Vector2i):
+	var all_pawn_instances = black_pawn_container.get_children() + white_pawn_container.get_children()
+	for p in all_pawn_instances:
+		var current_pawn_coordinates = board.local_to_map(p.position)
+		if current_pawn_coordinates  == coordinates:
+			return p
 
 func _on_jumped_over(coordinates):
-	print("HOPS!")
+	var pawn_for_removal = get_pawn_on_coordinates(coordinates)
+	pawn_for_removal.kill()
 	
-func is_jump(start_coordinates: Vector2i, end_coordinates: Vector2i):
-	if abs(end_coordinates.x - start_coordinates.x) > 1:
+func jumped_over_tile(start_coordinates: Vector2i, end_coordinates: Vector2i):
+	var distance = end_coordinates.x - start_coordinates.x
+	if abs(distance) > 1:
+		if is_movement_left(start_coordinates, end_coordinates):
+			return Vector2(start_coordinates.x + distance/2,  start_coordinates.y - 1)
+		else:
+			return Vector2(start_coordinates.x + distance/2,  start_coordinates.y + 1)
+	return false
+	
+func is_movement_left(start_coordinates: Vector2i, end_coordinates: Vector2i):
+	if end_coordinates.y - start_coordinates.y < 0:
 		return true
+
+func _on_pawn_killed(is_type_black: bool):
+	if not is_type_black:
+		black_points += 1
+		black_score_label.text = str(black_points)
+	else:
+		white_points += 1
+		white_score_label.text = str(white_points)

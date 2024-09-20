@@ -17,3 +17,7 @@ func move(destination):
 func _on_input_event(viewport, event, shape_idx):
 	if Input.is_action_just_pressed("lmb_click"):
 		Events.pawn_clicked.emit(self)
+		
+func kill():
+	Events.pawn_killed.emit(is_type_black)
+	self.queue_free()
