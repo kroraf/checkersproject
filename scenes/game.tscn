@@ -1,13 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://ox4oyhmx4iwh"]
+[gd_scene load_steps=5 format=3 uid="uid://ox4oyhmx4iwh"]
 
 [ext_resource type="PackedScene" uid="uid://d1n0mm03nlufb" path="res://scenes/board.tscn" id="1_jpbck"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_suuek"]
 [ext_resource type="Texture2D" uid="uid://c4jyklj4a15kv" path="res://assets/tiles/isometric-sandbox-sheet.png" id="2_dn8f1"]
+[ext_resource type="Texture2D" uid="uid://d21cex6kyynnh" path="res://assets/Gray.png" id="2_ijy3r"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_suuek")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_offset = Vector2(32, -29)
+repeat_size = Vector2(64, 64)
+autoscroll = Vector2(10, 10)
+repeat_times = 8
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(166, 277)
+texture = ExtResource("2_ijy3r")
 
 [node name="Board" parent="." instance=ExtResource("1_jpbck")]
 
@@ -32,28 +41,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
-layout_mode = 1
-offset_left = -104.0
-offset_top = -5.0
-offset_right = -64.0
-offset_bottom = 35.0
-
-[node name="BlackScoreLabel" type="Label" parent="UI/VBoxContainer"]
+[node name="TurnIndicator" type="Label" parent="UI"]
 layout_mode = 2
-text = "0"
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="UI"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 79.0
-offset_top = -5.0
-offset_right = 119.0
-offset_bottom = 35.0
-grow_horizontal = 0
-
-[node name="WhiteScoreLabel" type="Label" parent="UI/VBoxContainer2"]
-layout_mode = 2
-text = "0"
+offset_left = -132.0
+offset_top = -10.0
+offset_right = -91.0
+offset_bottom = 13.0
+text = "Turn:"

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="TurnManager" load_steps=2 format=3 uid="uid://bnqy7808g1mlh"]
+
+[ext_resource type="Script" path="res://TurnManager.gd" id="1_v1xpr"]
+
+[resource]
+script = ExtResource("1_v1xpr")
