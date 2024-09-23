@@ -13,11 +13,11 @@ config_version=5
 config/name="CheckersProject"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
-Events="*res://scripts/Events.gd"
+Events="*res://scripts/events.gd"
+Board="*res://scenes/board.tscn"
 
 [display]
 

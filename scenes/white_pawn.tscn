@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://txyo4lhfafvr"]
+[gd_scene load_steps=3 format=3 uid="uid://npxe3x8o2fbu"]
 
 [ext_resource type="PackedScene" uid="uid://ca0ge5iie1ix" path="res://scenes/pawn.tscn" id="1_q4f4s"]
 [ext_resource type="Texture2D" uid="uid://b8atfplikj22" path="res://assets/tiles/small-cube-white.png" id="2_3dg5x"]

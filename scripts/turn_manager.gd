@@ -1,5 +1,5 @@
 extends Resource
-class_name TurnManager
+
 
 enum {BLACK_TURN, WHITE_TURN}
 

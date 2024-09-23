@@ -5,9 +5,9 @@ extends Node2D
 @onready var white_pawn_container = $WhitePawnContainer
 @onready var black_pawn_container = $BlackPawnContainer
 @onready var turn_indicator = $UI/TurnIndicator
+@onready var end_game_timer = $EndGameTimer
 
-var TURN_MANAGER = preload("res://TurnManager.tres")
-
+var TURN_MANAGER = preload("res://resources/turn_manager.tres")
 var base_pawn = preload("res://scenes/pawn.tscn")
 var black_pawn = preload("res://scenes/black_pawn.tscn")
 var white_pawn = preload("res://scenes/white_pawn.tscn")
@@ -23,6 +23,7 @@ var BLACK_PAWN_START_COORDINATES = [Vector2i(0, 0), Vector2i(0, 2), Vector2i(0, 
 									
 var WHITE_PAWN_START_COORDINATES = [Vector2i(6, 6), Vector2i(6, 4), Vector2i(6, 2), Vector2i(6, 0),
 									Vector2i(7, 7), Vector2i(7, 5), Vector2i(7, 3), Vector2i(7, 1)]
+
 
 signal jumped_over(coordinates)
 
@@ -45,7 +46,7 @@ func _ready() -> void:
 	jumped_over.connect(_on_jumped_over)
 	black_score = get_tree().get_node_count_in_group("Black")
 	white_score = get_tree().get_node_count_in_group("White")
-	TURN_MANAGER.turn = TURN_MANAGER.BLACK_TURN
+	TURN_MANAGER.turn = TURN_MANAGER.WHITE_TURN
 	
 
 func _input(event: InputEvent) -> void:
@@ -116,8 +117,9 @@ func calculate_possible_movement(pawn: Pawn):
 						board.set_cell(jump_coordinates, 0, green_tile)
 						destination_tiles.append(jump_coordinates)
 			else:
-				board.set_cell(tile_coodinates, 0, green_tile)
-				destination_tiles.append(tile_coodinates)
+				if not selected_pawn.has_just_jumped:
+					board.set_cell(tile_coodinates, 0, green_tile)
+					destination_tiles.append(tile_coodinates)
 
 			
 func clear_destination_tiles():
@@ -130,7 +132,8 @@ func _setup_outline_shader() -> void:
 	outline.set_shader_parameter("outline_color", Color("5b83c9"))
 	
 func piece_move_finished():
-	if not is_jump_possible(selected_pawn):
+	if not is_jump_possible(selected_pawn) or selected_pawn.has_just_jumped == false:
+		selected_pawn.has_just_jumped = false
 		switch_turns()
 	deselect_pawn()
 	
@@ -181,12 +184,16 @@ func _on_black_turn_started():
 	turn_indicator.text = "Turn: BLACK"
 	if black_score <= 0:
 		print("Blacks lost")
+		end_game_timer.start()
+		await end_game_timer.timeout
 		get_tree().quit()
 	
 func _on_white_turn_started():
 	turn_indicator.text = "Turn: WHITE"
 	if white_score <= 0:
 		print("Whites lost")
+		end_game_timer.start()
+		await end_game_timer.timeout
 		get_tree().quit()
 	
 func switch_turns():
@@ -208,6 +215,7 @@ func _move_to_clicked_cell():
 			var jump = jumped_over_tile(selected_pawn_star_coordinates, clicked_cell_coordinates)
 			if jump:
 				jumped_over.emit(jump)
+				selected_pawn.has_just_jumped = true
 			piece_move_finished()
 			
 func is_movement_possible(pawn: Pawn):

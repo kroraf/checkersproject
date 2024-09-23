@@ -4,6 +4,8 @@ class_name Pawn
 
 @export var is_type_black: bool
 
+var has_just_jumped = false
+
 func _ready() -> void:
 	pass # Replace with function body.
 
