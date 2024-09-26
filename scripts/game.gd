@@ -4,14 +4,20 @@ extends Node2D
 @onready var camera_2d = $Camera2D
 @onready var white_pawn_container = $WhitePawnContainer
 @onready var black_pawn_container = $BlackPawnContainer
-@onready var turn_indicator = $UI/TurnIndicator
 @onready var end_game_timer = $EndGameTimer
+@onready var turn_indicator = $UI/CurrentTurnIndicator
+#sfx
+@onready var sfx_select = $sfxSelect
+@onready var sfx_move = $sfxMove
+@onready var sfx_kill = $sfxKill
+
 
 var TURN_MANAGER = preload("res://resources/turn_manager.tres")
 var base_pawn = preload("res://scenes/pawn.tscn")
 var black_pawn = preload("res://scenes/black_pawn.tscn")
 var white_pawn = preload("res://scenes/white_pawn.tscn")
 const outline_shader = preload("res://shaders/pawn_outline.gdshader")
+var sfx_bus = AudioServer.get_bus_index("SFX")
 
 static var green_tile: Vector2i =  Vector2i(0, 0)
 static var orange_tile: Vector2i =  Vector2i(0, 6)
@@ -86,6 +92,7 @@ func select_pawn(pawn: Pawn):
 	selected_pawn.z_index = 10
 	calculate_possible_movement(pawn)
 	selected_pawn.sprite_2d.set_material(outline)
+	sfx_select.play()
 
 func deselect_pawn():
 	if selected_pawn:
@@ -175,13 +182,15 @@ func is_movement_left(start_coordinates: Vector2i, end_coordinates: Vector2i):
 		return true
 
 func _on_pawn_killed(is_type_black: bool):
+	sfx_kill.play()
 	if is_type_black:
 		black_score -= 1
 	else:
 		white_score -= 1
 
 func _on_black_turn_started():
-	turn_indicator.text = "Turn: BLACK"
+	turn_indicator.text = "BLACK"
+	turn_indicator.add_theme_color_override("font_color", Color.BLACK)
 	if black_score <= 0:
 		print("Blacks lost")
 		end_game_timer.start()
@@ -189,7 +198,8 @@ func _on_black_turn_started():
 		get_tree().quit()
 	
 func _on_white_turn_started():
-	turn_indicator.text = "Turn: WHITE"
+	turn_indicator.text = "WHITE"
+	turn_indicator.add_theme_color_override("font_color", Color.WHITE)
 	if white_score <= 0:
 		print("Whites lost")
 		end_game_timer.start()
@@ -209,6 +219,7 @@ func _move_to_clicked_cell():
 	var cell_data = board.get_cell_tile_data(clicked_cell_coordinates)
 	if cell_data:
 		if clicked_cell_coordinates in destination_tiles:
+			sfx_move.play()
 			var selected_pawn_star_coordinates = board.local_to_map(selected_pawn.position)
 			clear_destination_tiles()
 			await selected_pawn.move(clicked_cell_position).finished
@@ -251,3 +262,11 @@ func is_jump_possible(pawn: Pawn):
 					if jump_coordinates in board.get_used_cells() and not is_tile_occupied(jump_coordinates):
 						return true
 	return false
+
+
+func _on_toggle_sound_button_toggled(toggled_on):
+	AudioServer.set_bus_mute(sfx_bus, not toggled_on)
+
+
+func _on_quit_button_pressed():
+	get_tree().quit()

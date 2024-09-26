@@ -1,9 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://ox4oyhmx4iwh"]
+[gd_scene load_steps=23 format=3 uid="uid://ox4oyhmx4iwh"]
 
 [ext_resource type="PackedScene" uid="uid://d1n0mm03nlufb" path="res://scenes/board.tscn" id="1_jpbck"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_suuek"]
 [ext_resource type="Texture2D" uid="uid://c4jyklj4a15kv" path="res://assets/tiles/isometric-sandbox-sheet.png" id="2_dn8f1"]
-[ext_resource type="Texture2D" uid="uid://d21cex6kyynnh" path="res://assets/Gray.png" id="2_ijy3r"]
+[ext_resource type="Texture2D" uid="uid://d21cex6kyynnh" path="res://assets/tiles/Gray.png" id="2_ijy3r"]
+[ext_resource type="FontVariation" uid="uid://brqwvc6xidqpx" path="res://resources/dogicapixel.tres" id="5_nyuxs"]
+[ext_resource type="AudioStream" uid="uid://dep0kj1tncp8a" path="res://audio/sfx/select.wav" id="6_a0b41"]
+[ext_resource type="AudioStream" uid="uid://oyldgl4yaqp1" path="res://audio/sfx/jump.wav" id="7_fba7y"]
+[ext_resource type="AudioStream" uid="uid://cevpc5tkg4s6h" path="res://audio/sfx/kill.wav" id="7_wbu12"]
+[ext_resource type="Texture2D" uid="uid://cfbc7kjg1nv2u" path="res://assets/icons/sound_on.png" id="9_mef7l"]
+[ext_resource type="Texture2D" uid="uid://c6hbhgiaguktd" path="res://assets/icons/sound_off.png" id="10_d4yxv"]
+[ext_resource type="Texture2D" uid="uid://byq23gfc14rq6" path="res://assets/icons/quit.png" id="11_0w4ft"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tj2xv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c7ceo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_schpr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t3c6s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h7my"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rukbx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wlxi3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hamke"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g1fmy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fl17p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qjiiq"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_suuek")
@@ -41,13 +70,76 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 
-[node name="TurnIndicator" type="Label" parent="UI"]
+[node name="TurnLabel" type="Label" parent="UI"]
 layout_mode = 2
 offset_left = -132.0
 offset_top = -10.0
-offset_right = -91.0
-offset_bottom = 13.0
+offset_right = -78.0
+offset_bottom = 7.0
+theme_override_colors/font_outline_color = Color(0.25, 0.25, 0.25, 0.819608)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("5_nyuxs")
+theme_override_font_sizes/font_size = 14
 text = "Turn:"
+
+[node name="CurrentTurnIndicator" type="Label" parent="UI"]
+layout_mode = 2
+offset_left = -76.0
+offset_top = -10.0
+offset_right = -22.0
+offset_bottom = 7.0
+theme_override_colors/font_outline_color = Color(0.25, 0.25, 0.25, 0.819608)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("5_nyuxs")
+theme_override_font_sizes/font_size = 14
+text = "null"
 
 [node name="EndGameTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="sfxSelect" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_a0b41")
+bus = &"SFX"
+
+[node name="sfxKill" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_wbu12")
+bus = &"SFX"
+
+[node name="sfxMove" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_fba7y")
+bus = &"SFX"
+
+[node name="ToggleSoundButton" type="CheckButton" parent="."]
+offset_left = 149.0
+offset_top = 133.0
+offset_right = 168.0
+offset_bottom = 157.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tj2xv")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_c7ceo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_schpr")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_t3c6s")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_3h7my")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_rukbx")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_wlxi3")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_hamke")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_g1fmy")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_fl17p")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qjiiq")
+theme_override_icons/checked = ExtResource("9_mef7l")
+theme_override_icons/unchecked = ExtResource("10_d4yxv")
+button_pressed = true
+flat = true
+
+[node name="QuitButton" type="Button" parent="."]
+offset_left = 146.0
+offset_top = -18.0
+offset_right = 168.0
+offset_bottom = 4.0
+focus_mode = 0
+icon = ExtResource("11_0w4ft")
+flat = true
+
+[connection signal="toggled" from="ToggleSoundButton" to="." method="_on_toggle_sound_button_toggled"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
